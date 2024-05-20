@@ -4,6 +4,8 @@ DashBudget é uma aplicação ReactJS que ajuda usuários a gerenciar seus orça
 
 Aplicação criada para aperfiçoar os conhecimentos em nextJS 14, tailwindcss, Tanstack-query, e também em conhecer ferramentas novas, como o clerk.
 
+A aplicação também faz uso do storage postgresql da vercel para o deploy da aplicação.
+
 ### Ferramentas utilizadas
 - NextJS 14
 - Typescript
@@ -16,7 +18,7 @@ Aplicação criada para aperfiçoar os conhecimentos em nextJS 14, tailwindcss, 
 ### Instalaçã
 Instale as depêndências do projeto
 ```bash
-npm install'  
+npm install
 ```
 
 Criar um container docker para rodar o banco de dados Postgres
