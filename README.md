@@ -7,6 +7,7 @@ DashBudget é uma aplicação ReactJS que ajuda usuários a gerenciar seus orça
 - Typescript
 - Clerk
 - Shadcn/ui
+- Prisma ORM
 
 ### Instalaçã
 Instale as depêndências do projeto
@@ -14,12 +15,23 @@ Instale as depêndências do projeto
 npm install
 ```
 
-Criar as variáveis de ambiente
+Criar um container docker para rodar o banco de dados Postgres
 ```bash
-cp .env.example .env.local
+docker compose up -d
+```
+
+Criar as variáveis de ambiente (env.local é do NextJS e .env é referente ao prismaORM)
+```bash
+cp .env.local.example .env.local
+cp .env.example .env
 ```
 
 Criar as chaves de acesso para autenticação com clerk, gerar uma aplicação e copiar as API KEYS para dentro do .env.local
+
+Gerar tabelas no banco de dados
+```bash
+npx prisma migrate dev
+```
 
 Rodando o projeto
 ```bash
@@ -31,6 +43,11 @@ npm run dev
 ### Documentações relevantes
 https://clerk.com/docs/quickstarts/nextjs
 https://clerk.com/docs/components/user/user-button
+https://clerk.com/docs/references/nextjs/current-user
 
 https://ui.shadcn.com/docs
+
+https://tailwindcss.com/docs/container
+
+https://www.prisma.io/nextjs
 -->
