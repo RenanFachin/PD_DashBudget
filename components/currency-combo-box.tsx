@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/popover"
 import { Currencies, Currency } from "@/lib/currencies"
 import { useQuery } from "@tanstack/react-query"
+import { SkeletonWrapper } from "./skeleton-wrapper"
+import { UserSettings } from "@prisma/client"
 
 
 export function CurrencyComboBox() {
@@ -33,42 +35,62 @@ export function CurrencyComboBox() {
     null
   )
 
-  const userSettings = useQuery({
+  // Tipando o userSettings com a tipagem que o prisma cria ao gerar o model
+  const userSettings = useQuery<UserSettings>({
     queryKey: ["userSettings"],
     queryFn: () => fetch("/api/user-settings").then(response => response.json())
   })
 
 
+  React.useEffect(() => {
+    if (!userSettings.data){
+      return
+    }
+  
+
+    const userCurrency = Currencies.find((currency) => currency.value === userSettings.data.currency)
+    
+    // Caso exista a moeda definida no banco de dados nas moedas disponíveis
+    // Definir a seleção do combobox
+    if(userCurrency){
+      setSelectedOption(userCurrency)
+    }
+  }, [userSettings.data])
+  
   // console.log('@@@ USER SETTINGS', userSettings)
 
   if (isDesktop) {
     return (
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[200px] justify-start">
-            {selectedOption ? <>{selectedOption.label}</> : <>Definir moeda</>}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0" align="start">
-          <OptionList setOpen={setOpen} setSelectedOption={setSelectedOption} />
-        </PopoverContent>
-      </Popover>
+      <SkeletonWrapper isLoading={userSettings.isFetching}>
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="w-[200px] justify-start">
+              {selectedOption ? <>{selectedOption.label}</> : <>Definir moeda</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0" align="start">
+            <OptionList setOpen={setOpen} setSelectedOption={setSelectedOption} />
+          </PopoverContent>
+        </Popover>
+      </SkeletonWrapper>
     )
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="outline" className="w-full justify-start">
-          {selectedOption ? <>{selectedOption.label}</> : <>Definir moeda</>}
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <div className="mt-4 border-t">
-          <OptionList setOpen={setOpen} setSelectedOption={setSelectedOption} />
-        </div>
-      </DrawerContent>
-    </Drawer>
+    <SkeletonWrapper isLoading={userSettings.isFetching}>
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
+          <Button variant="outline" className="w-full justify-start">
+            {selectedOption ? <>{selectedOption.label}</> : <>Definir moeda</>}
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <div className="mt-4 border-t">
+            <OptionList setOpen={setOpen} setSelectedOption={setSelectedOption} />
+          </div>
+        </DrawerContent>
+      </Drawer>
+    </SkeletonWrapper>
   )
 }
 
