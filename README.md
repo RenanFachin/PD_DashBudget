@@ -8,6 +8,7 @@ DashBudget é uma aplicação ReactJS que ajuda usuários a gerenciar seus orça
 - Clerk
 - Shadcn/ui
 - Prisma ORM
+- Tanstack-query
 
 ### Instalaçã
 Instale as depêndências do projeto
@@ -55,4 +56,8 @@ https://tailwindcss.com/docs/container
 
 https://www.prisma.io/nextjs
 https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/nextjs-prisma-client-dev-practices
+
+
+https://tanstack.com/query/v5/docs/framework/react/installation
+https://tanstack.com/query/v5/docs/framework/react/devtools
 -->
