@@ -9,11 +9,12 @@ DashBudget é uma aplicação ReactJS que ajuda usuários a gerenciar seus orça
 - Shadcn/ui
 - Prisma ORM
 - Tanstack-query
+- Zod
 
 ### Instalaçã
 Instale as depêndências do projeto
 ```bash
-npm install
+npm install'  
 ```
 
 Criar um container docker para rodar o banco de dados Postgres
