@@ -56,13 +56,14 @@ https://ui.shadcn.com/docs
 https://ui.shadcn.com/docs/components/combobox#responsive
 https://github.com/shadcn-ui/ui/blob/main/apps/www/hooks/use-media-query.tsx
 
-
 https://tailwindcss.com/docs/container
 
 https://www.prisma.io/nextjs
 https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/nextjs-prisma-client-dev-practices
 
-
 https://tanstack.com/query/v5/docs/framework/react/installation
 https://tanstack.com/query/v5/docs/framework/react/devtools
+
+https://vercel.com/docs/storage/vercel-postgres
+https://github.com/vercel/storage/tree/main/packages/postgres#readme
 -->
