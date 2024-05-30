@@ -8,9 +8,13 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { CreateCategorySchema, CreateCategorySchemaType } from "@/schema/categories";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusSquare } from "lucide-react";
-import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Loader2, PlusSquare } from "lucide-react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
+import { createCategory } from "../_actions/categories";
+import { Category } from "@prisma/client";
+import { toast } from "sonner";
 
 interface createCategoryDialogProps{
   type: TransactionType
@@ -24,6 +28,49 @@ export function CreateCategoryDialog({type}: createCategoryDialogProps){
       type
     }
   })
+
+
+  const queryClient = useQueryClient()
+
+  const {mutate, isPending} = useMutation({
+    mutationFn: createCategory,
+    onSuccess: async (data: Category) => {
+      form.reset({
+        name: "",
+        type
+      })
+
+      toast.success(`Categoria ${data.name} criada com sucesso!`, {
+        id: "create-category"
+      })
+
+      /* 
+      Ao invalidar as consultas relacionadas à criação de categoria, é garantido que a aplicação faça um novo fetch, com as informações mais atualizadas. Isso é crucial para manter a consistência dos dados apresentados ao usuário, especialmente após operações que alteram o estado dos dados no servidor.
+      */
+      await queryClient.invalidateQueries({
+        queryKey: ["create-category"]
+      })
+
+
+      setIsOpen((prev) => !prev)
+    },
+    onError: () => {
+      toast.error("Algo de errado aconteceu.",{
+        id: "create-category"
+      })
+    }
+  })
+
+  const handleSubmitForm = useCallback((data: CreateCategorySchemaType) => {
+    toast.loading("Criando a categoria...", {
+      id: "create-category"
+    })
+
+    // Fazendo a chamada para a mutate mandando os dados do formulário
+    mutate(data)
+
+  }, [mutate])
+  
   
   return(
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -53,7 +100,7 @@ export function CreateCategoryDialog({type}: createCategoryDialogProps){
         </DialogHeader>
 
         <Form {...form}>
-            <form className="space-y-8">
+            <form onSubmit={form.handleSubmit(handleSubmitForm)} className="space-y-8">
               <FormField 
                   control={form.control}
                   name="name"
@@ -80,8 +127,9 @@ export function CreateCategoryDialog({type}: createCategoryDialogProps){
             </Button>
           </DialogClose>
 
-          <Button>
-            Salvar
+          <Button onClick={form.handleSubmit(handleSubmitForm)} disabled={isPending}>
+            {!isPending && "Create"}
+            {isPending && <Loader2 className="animate-spin"/>}
           </Button>
         </DialogFooter>
       </DialogContent>
