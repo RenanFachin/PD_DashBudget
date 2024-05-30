@@ -6,18 +6,27 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Category } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { CreateCategoryDialog } from "./create-category-dialog"
 import { cn } from "@/lib/utils"
 import { Check, ChevronsUpDown} from 'lucide-react'
 
 interface CategoryPickerProps{
   type: TransactionType
+  onChange: (value: string) => void
 }
 
-export function CategoryPicker({type}: CategoryPickerProps){
+export function CategoryPicker({type, onChange}: CategoryPickerProps){
   const [isOpen, setIsOpen] = useState(false)
   const [value, setValue] = useState("")
+
+  useEffect(() => {
+    if(!value) {
+      return
+    }
+
+    onChange(value)
+  }, [onChange, value])
  
   const categoriesQuery = useQuery({
     queryKey: ['categories', type],

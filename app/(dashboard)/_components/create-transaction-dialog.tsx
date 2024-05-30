@@ -4,9 +4,9 @@ import { TransactionType } from "@/@types/types"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 import { CreateTransactionSchema, CreateTransactionSchemaType } from "@/schema/transaction"
-import { ReactNode } from "react"
+import { ReactNode, useCallback } from "react"
 import { useForm } from 'react-hook-form'
-import {zodResolver} from '@hookform/resolvers/zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { CategoryPicker } from "./category-picker"
@@ -24,6 +24,10 @@ export function CreateTransactionDialog({trigger, type}: CreateTransactionDialog
       date: new Date(),
     }
   })
+
+  const handleCategoryChange = useCallback((value: string) =>{
+    form.setValue("category", value)
+  }, [form])
 
   return(
     <Dialog>
@@ -88,7 +92,7 @@ export function CreateTransactionDialog({trigger, type}: CreateTransactionDialog
                     <FormItem>
                       <FormLabel className="mr-2">Categoria</FormLabel>
                       <FormControl>
-                        <CategoryPicker type={type}/>
+                        <CategoryPicker type={type} onChange={handleCategoryChange}/>
                       </FormControl>
 
                       <FormDescription>
