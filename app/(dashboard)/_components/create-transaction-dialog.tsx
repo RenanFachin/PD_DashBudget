@@ -86,7 +86,7 @@ export function CreateTransactionDialog({trigger, type}: CreateTransactionDialog
                   name="category"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Categoria</FormLabel>
+                      <FormLabel className="mr-2">Categoria</FormLabel>
                       <FormControl>
                         <CategoryPicker type={type}/>
                       </FormControl>

@@ -18,9 +18,10 @@ import { toast } from "sonner";
 
 interface createCategoryDialogProps{
   type: TransactionType
+  onSuccessCallback: (category: Category) => void
 }
 
-export function CreateCategoryDialog({type}: createCategoryDialogProps){
+export function CreateCategoryDialog({type, onSuccessCallback}: createCategoryDialogProps){
   const [isOpen, setIsOpen] = useState(false)
   const form = useForm<CreateCategorySchemaType>({
     resolver: zodResolver(CreateCategorySchema),
@@ -44,6 +45,7 @@ export function CreateCategoryDialog({type}: createCategoryDialogProps){
         id: "create-category",
       });
 
+      onSuccessCallback(data)
 
       /* 
       Ao invalidar as consultas relacionadas à criação de categoria, é garantido que a aplicação faça um novo fetch, com as informações mais atualizadas. Isso é crucial para manter a consistência dos dados apresentados ao usuário, especialmente após operações que alteram o estado dos dados no servidor.
@@ -56,9 +58,9 @@ export function CreateCategoryDialog({type}: createCategoryDialogProps){
     },
     onError: (error) => {
       if(error.message.includes('Categoria já existente.')){
-      toast.error(error.message, {
+      toast.error('Categoria já existente.', {
         id: "create-category",
-      });
+      })
       } else {
         toast.error("Algo inesperado aconteceu...", {
           id: "create-category",
@@ -114,7 +116,7 @@ export function CreateCategoryDialog({type}: createCategoryDialogProps){
                     <FormItem>
                       <FormLabel>Nome</FormLabel>
                       <FormControl>
-                        <Input defaultValue={""} {...field}/>
+                        <Input placeholder="Categoria" defaultValue={""} {...field}/>
                       </FormControl>
 
                       <FormDescription>

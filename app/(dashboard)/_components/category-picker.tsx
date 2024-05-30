@@ -2,12 +2,14 @@
 
 import { TransactionType } from "@/@types/types"
 import { Button } from "@/components/ui/button"
-import { Command, CommandInput } from "@/components/ui/command"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Category } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { CreateCategoryDialog } from "./create-category-dialog"
+import { cn } from "@/lib/utils"
+import { Check, ChevronsUpDown} from 'lucide-react'
 
 interface CategoryPickerProps{
   type: TransactionType
@@ -26,6 +28,13 @@ export function CategoryPicker({type}: CategoryPickerProps){
     (category: Category) => category.name === value
   )
 
+  const successCallback = useCallback(
+    (category: Category) =>{
+      setValue(category.name)
+      setIsOpen((prev)=> !prev)
+    }, [setValue, setIsOpen])
+
+
   return(
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
@@ -33,6 +42,8 @@ export function CategoryPicker({type}: CategoryPickerProps){
           {
             selectedCategory ? <CategoryRow category={selectedCategory}/> : "Selecionar categoria"
           }
+
+          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50"/>
         </Button>
       </PopoverTrigger>
 
@@ -41,7 +52,40 @@ export function CategoryPicker({type}: CategoryPickerProps){
             <CommandInput placeholder="Procurar categoria..."/>
 
             {/* Criar nova categoria com um novo dialog */}
-            <CreateCategoryDialog type={type}/>
+            <CreateCategoryDialog type={type} onSuccessCallback={successCallback}/>
+
+            {/* Caso existam categorias cadastrada, será exibido */}
+            <CommandEmpty>
+              <p>Categoria não encontrada</p>
+              <p className="text-xs text-muted-foreground">
+                Dica: Crie uma nova categoria
+              </p>
+            </CommandEmpty>
+
+            {/* Caso exista */}
+            <CommandGroup>
+            <CommandList>
+              {categoriesQuery.data &&
+                categoriesQuery.data.map((category: Category) => (
+                  <CommandItem
+                    key={category.name}
+                    onSelect={() => {
+                      setValue(category.name);
+                      setIsOpen((prev) => !prev);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 w-4 h-4 opacity-0 text-emerald-500",
+                        value === category.name && "opacity-100"
+                      )}
+                    />
+
+                    <CategoryRow category={category} />
+                  </CommandItem>
+                ))}
+            </CommandList>
+            </CommandGroup>
           </Command>
       </PopoverContent>
     </Popover>
