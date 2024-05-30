@@ -37,30 +37,30 @@ export function CreateCategoryDialog({type}: createCategoryDialogProps){
     onSuccess: async (data: Category) => {
       form.reset({
         name: "",
-        type
-      })
+        type,
+      });
 
-      toast.success(`Categoria ${data.name} criada com sucesso!`, {
-        id: "create-category"
-      })
+      toast.success(`Categoria ${data.name} adicionar com sucesso! 🎉`, {
+        id: "create-category",
+      });
+
 
       /* 
       Ao invalidar as consultas relacionadas à criação de categoria, é garantido que a aplicação faça um novo fetch, com as informações mais atualizadas. Isso é crucial para manter a consistência dos dados apresentados ao usuário, especialmente após operações que alteram o estado dos dados no servidor.
       */
       await queryClient.invalidateQueries({
-        queryKey: ["create-category"]
-      })
+        queryKey: ["categories"],
+      });
 
-
-      setIsOpen((prev) => !prev)
+      setIsOpen((prev) => !prev);
     },
     onError: () => {
-      toast.error("Algo de errado aconteceu.",{
-        id: "create-category"
-      })
-    }
-  })
-
+      toast.error("Something went wrong", {
+        id: "create-category",
+      });
+    },
+  });
+  
   const handleSubmitForm = useCallback((data: CreateCategorySchemaType) => {
     toast.loading("Criando a categoria...", {
       id: "create-category"
