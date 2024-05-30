@@ -54,11 +54,17 @@ export function CreateCategoryDialog({type}: createCategoryDialogProps){
 
       setIsOpen((prev) => !prev);
     },
-    onError: () => {
-      toast.error("Something went wrong", {
+    onError: (error) => {
+      if(error.message.includes('Categoria já existente.')){
+      toast.error(error.message, {
         id: "create-category",
       });
-    },
+      } else {
+        toast.error("Algo inesperado aconteceu...", {
+          id: "create-category",
+        });
+      }
+  }
   });
   
   const handleSubmitForm = useCallback((data: CreateCategorySchemaType) => {

@@ -22,6 +22,18 @@ export async function createCategory(form: CreateCategorySchemaType){
   // Obtendo os dados do form
   const {name, type} = parsedBody.data
 
+
+  // Validação para saber se já existe no db uma categoria com mesmo nome
+  const categoryAlreadyExists = await prisma.category.findFirst({
+    where:{
+      name,
+    }
+  })
+
+  if (categoryAlreadyExists) {
+    throw new Error('Categoria já existente.');
+  }
+
   // Criando a categoria
   return await prisma.category.create({
     data: {
