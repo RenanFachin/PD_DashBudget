@@ -34,7 +34,6 @@ model Transaction {
   type        String   @default("income")
 
   category     String
-  categoryIcon String
 }
 
 model MonthHistory {

@@ -109,6 +109,8 @@ export function CreateCategoryDialog({type, onSuccessCallback}: createCategoryDi
 
         <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmitForm)} className="space-y-8">
+              
+              
               <FormField 
                   control={form.control}
                   name="name"
