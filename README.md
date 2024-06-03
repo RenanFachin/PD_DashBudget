@@ -2,7 +2,7 @@
 
 DashBudget é uma aplicação ReactJS que ajuda usuários a gerenciar seus orçamentos pessoais e acompanhar suas transações financeiras. Com um dashboard intuitivo e opções para gestão detalhada, o DashBudget torna a administração financeira simples e acessível.
 
-Aplicação criada para aperfiçoar os conhecimentos em nextJS 14, tailwindcss, Tanstack-query, e também em conhecer ferramentas novas, como o clerk.
+Aplicação criada para aperfiçoar os conhecimentos em nextJS 14, tailwindcss, Tanstack-query, server actions e também em conhecer ferramentas novas, como o clerk.
 
 A aplicação também faz uso do storage postgresql da vercel para o deploy da aplicação.
 

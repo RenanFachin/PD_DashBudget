@@ -4,6 +4,7 @@ import { currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import {Plus, Minus} from 'lucide-react'
 import { CreateTransactionDialog } from "./_components/create-transaction-dialog"
+import { Overview } from "./_components/overview"
 
 export default async function Dashboard(){
   // https://clerk.com/docs/references/nextjs/current-user
@@ -27,6 +28,7 @@ export default async function Dashboard(){
   }
   return(
     <div className="h-full bg-background">
+      {/* Seção de nome e botões de comando */}
       <div className="border-b bg-card">
         <div className="container flex flex-wrap items-center justify-between gap-6 py-8">
           <p className="text-2xl font-bold">
@@ -52,6 +54,8 @@ export default async function Dashboard(){
           </div>
         </div>
       </div>
+
+      <Overview userSettings={userSettings}/>
     </div>
   )
 }
